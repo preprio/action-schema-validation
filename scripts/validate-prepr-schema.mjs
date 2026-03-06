@@ -127,6 +127,7 @@ async function main() {
       });
       console.error(`\n${relativeFile}`);
       console.error(`  - Invalid JSON: ${error.message}`);
+      console.error('');
       continue;
     }
 
@@ -140,6 +141,7 @@ async function main() {
         fileErrors.push(message);
         console.error(`  - ${message}`);
       }
+      console.error('');
       report.invalidFiles.push({
         file: relativeFile,
         errors: fileErrors
