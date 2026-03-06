@@ -35,22 +35,11 @@ jobs:
         with:
           path: repository
 
-      - name: Resolve workflow repository and ref
-        id: workflow_source
-        shell: bash
-        run: |
-          set -euo pipefail
-          workflow_ref='${{ github.workflow_ref }}'
-          repo="${workflow_ref%%/.github/workflows/*}"
-          ref="${workflow_ref##*@}"
-          echo "repository=${repo}" >> "$GITHUB_OUTPUT"
-          echo "ref=${ref}" >> "$GITHUB_OUTPUT"
-
       - name: Checkout validation workflow repository
         uses: actions/checkout@v6
         with:
-          repository: ${{ steps.workflow_source.outputs.repository }}
-          ref: ${{ steps.workflow_source.outputs.ref }}
+          repository: preprio/workflow_schema_validation
+          ref: main
           path: validator-repo
 
       - name: Setup Node.js
