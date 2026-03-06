@@ -5,15 +5,16 @@
   "description": "JSON Schema for Prepr CMS schema files (Models, Components, Enum, Remote Source)",
 
   "oneOf": [
-    { "$ref": "#/definitions/ContentModel" },
+    { "$ref": "#/definitions/Model" },
     { "$ref": "#/definitions/Component" },
     { "$ref": "#/definitions/Asset" },
-    { "$ref": "#/definitions/Enum" }
+    { "$ref": "#/definitions/Enum" },
+    { "$ref": "#/definitions/RemoteSource" }
   ],
 
   "definitions": {
 
-    "ContentModel": {
+    "Model": {
 
       "type": "object",
 
@@ -22,7 +23,7 @@
       "properties": {
 
         "label": {
-          "const": "ContentModel"
+          "const": "Model"
         },
 
         "ref": {
@@ -361,6 +362,180 @@
           "type": "boolean",
           "default": false,
           "description": "If enabled the GraphQL type will be set to string instead of ENUM"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "RemoteSource": {
+
+      "type": "object",
+
+      "required": ["ref", "body", "body_singular", "label", "type"],
+
+      "properties": {
+
+        "label": {
+          "const": "Model"
+        },
+
+        "ref": {
+          "type": "string",
+          "pattern": "uuid",
+          "description": "This ID is used when an object is being renamed, if the ref stays the same, the schema will rename the object instead of creating a new one"
+        },
+
+        "body": {
+          "type": "string",
+          "description": "Display name (has to be unique within the whole schema)"
+        },
+
+        "body_singular": {
+          "type": "string",
+          "pattern": "^[_A-Za-z][_0-9A-Za-z]*$",
+          "description": "API singular name (GraphQL identifier, has to be unique within the whole schema)"
+        },
+
+        "body_plural": {
+          "type": "string",
+          "description": "API plural name (GraphQL collection name, has to be unique within the whole schema)"
+        },
+
+        "schema_version": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "Schema version (e.g., 2025-04-09)"
+        },
+
+        "single_instance": {
+          "type": "boolean",
+          "default": false,
+          "description": "Only one content item allowed"
+        },
+
+        "type": {
+          "type": "string",
+          "enum": ["model", "enum", "asset", "remote_source"],
+          "default": "model",
+          "description": "Content model type"
+        },
+
+        "description": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Editorial description for the object"
+        },
+
+        "folder": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Name of the folder, the object could be added to"
+        },
+
+        "appearance_image": {
+          "type": "string",
+          "format": "uri",
+          "description": "Image URL for visual appearance"
+        },
+
+        "appearance_tag": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Tag for appearance customization"
+        },
+
+        "slug": {
+          "type": "string",
+          "description": "Slug template (e.g., blog/{title}/, {parent_page.slug}/{internal_title}/)"
+        },
+
+        "slug_postfix": {
+          "type": "boolean",
+          "default": true,
+          "description": "If enabled, the slug will always be postfixed with a forward slash"
+        },
+
+        "lock_content_item": {
+          "type": "boolean",
+          "default": false,
+          "description": "If enabled content items can't be deleted"
+        },
+
+        "previewing": {
+          "type": "boolean",
+          "default": true,
+          "description": "If enabled, editors can use live preview"
+        },
+
+        "workflow": {
+          "type": "boolean",
+          "default": true,
+          "description": "If enabled, workflow stages can be added to the items"
+        },
+
+        "scheduling": {
+          "type": "boolean",
+          "default": true,
+          "description": "If enabled items can be scheduled"
+        },
+
+        "engagement_insights": {
+          "type": "boolean",
+          "default": false,
+          "description": "If enabled metrics can be viewed"
+        },
+
+        "commenting": {
+          "type": "boolean",
+          "default": true,
+          "description": "If enabled comments can be added"
+        },
+
+        "versioning": {
+          "type": "boolean",
+          "default": true,
+          "description": "If enabled items will be versioned and can be restored"
+        },
+
+        "content_check": {
+          "type": "boolean",
+          "default": false,
+          "description": "If enabled editors can run content check"
+        },
+
+        "visible": {
+          "type": "boolean",
+          "default": true,
+          "description": "If disabled editors can't make an item from the item list of this type"
+        },
+
+        "review_urls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["body", "url", "live_preview"],
+            "properties": {
+              "body": {
+                "type": "string",
+                "description": "Editorial label for this review URL"
+              },
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "live_preview": {
+                "type": "boolean",
+                "default": true,
+                "description": "If enabled this URL can be used in the visual editor"
+              }
+            }
+          },
+          "description": "Preview URLs used to view the item externally or in the visual editor"
+        },
+
+        "fields": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Field" }
         }
       },
       "additionalProperties": false
