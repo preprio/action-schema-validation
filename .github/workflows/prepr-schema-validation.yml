@@ -57,7 +57,7 @@ jobs:
         working-directory: validator-repo
         run: |
           node scripts/validate-prepr-schema.mjs \
-            --schema spec/2025-03-05.json5 \
+            --schema spec/2026-03-05.json5 \
             --target ../repository/prepr/schema \
             --report-file ../repository/prepr-schema-validation-report.json
 
