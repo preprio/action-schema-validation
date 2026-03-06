@@ -77,11 +77,14 @@ jobs:
         id: validate
         continue-on-error: true
         working-directory: validator-repo
+        shell: bash
         run: |
+          set -o pipefail
           node scripts/validate-prepr-schema.mjs \
             --schema "${SPEC_FILE}" \
             --target ../repository/prepr/schema \
-            --report-file ../repository/prepr-schema-validation-report.json
+            --report-file ../repository/prepr-schema-validation-report.json \
+            2>&1 | tee ../repository/prepr-schema-validation.log
 
       - name: Publish validation outputs
         id: finalize
@@ -100,6 +103,9 @@ jobs:
             invalid_files="1"
             report_json='{"isValid":false,"filesChecked":0,"invalidFiles":[{"file":"prepr/schema","errors":["Repository is missing required schema directory prepr/schema or contains no JSON files."]}]}'
             printf '%s\n' "$report_json" > "$report_path"
+          fi
+          if [ ! -f "prepr-schema-validation.log" ]; then
+            printf '%s\n' "Validation log was not produced. Check prior workflow steps for failure details." > prepr-schema-validation.log
           fi
 
           if [ "${{ steps.validate.outcome }}" = "success" ]; then

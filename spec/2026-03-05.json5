@@ -208,7 +208,7 @@
         },
 
         "fields": {
-          "type": "array",
+          "type": ["array", "null"],
           "items": { "$ref": "#/definitions/Field" }
         }
       },
@@ -280,7 +280,7 @@
         },
 
         "fields": {
-          "type": "array",
+          "type": ["array", "null"],
           "items": { "$ref": "#/definitions/Field" }
         }
       },
@@ -324,7 +324,7 @@
         },
 
         "fields": {
-          "type": "array",
+          "type": ["array", "null"],
           "items": { "$ref": "#/definitions/Field" }
         }
       },
@@ -1484,8 +1484,10 @@
 
             "properties": {
               "appearance": {
-                "type": "integer",
-                "enum": [1,2,3,4,5],
+                "oneOf": [
+                  { "type": "integer", "minimum": 1, "maximum": 6 },
+                  { "type": "string", "pattern": "^[1-6]$" }
+                ],
                 "description": "Number of columns"
               }
             }

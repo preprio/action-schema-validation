@@ -153,7 +153,7 @@ async function main() {
   }
 
   for (const file of files) {
-    const relativeFile = path.relative(process.cwd(), file);
+    const relativeFile = path.basename(file);
 
     let payload;
     try {
