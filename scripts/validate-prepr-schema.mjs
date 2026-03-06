@@ -78,13 +78,6 @@ function collectRootGraphqlNames(relativeFile, payload) {
   return names;
 }
 
-function escapeWorkflowCommandValue(value) {
-  return String(value)
-    .replace(/%/g, '%25')
-    .replace(/\r/g, '%0D')
-    .replace(/\n/g, '%0A');
-}
-
 async function main() {
   const schemaPath = getArg('--schema');
   const targetPath = getArg('--target', 'prepr/schema');
@@ -209,12 +202,10 @@ async function main() {
   }
 
   for (const file of fileOrder) {
-    console.error(`::group::Schema validation errors in ${file}`);
+    console.error(`\n${file}`);
     for (const message of errorsByFile.get(file) || []) {
       console.error(`  - ${message}`);
-      console.error(`::error file=${file}::${escapeWorkflowCommandValue(message)}`);
     }
-    console.error('::endgroup::');
     console.error('');
   }
 

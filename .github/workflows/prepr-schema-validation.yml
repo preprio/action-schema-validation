@@ -77,14 +77,11 @@ jobs:
         id: validate
         continue-on-error: true
         working-directory: validator-repo
-        shell: bash
         run: |
-          set -o pipefail
           node scripts/validate-prepr-schema.mjs \
             --schema "${SPEC_FILE}" \
             --target ../repository/prepr/schema \
-            --report-file ../repository/prepr-schema-validation-report.json \
-            2>&1 | tee ../repository/prepr-schema-validation.log
+            --report-file ../repository/prepr-schema-validation-report.json
 
       - name: Publish validation outputs
         id: finalize
@@ -104,9 +101,6 @@ jobs:
             report_json='{"isValid":false,"filesChecked":0,"invalidFiles":[{"file":"prepr/schema","errors":["Repository is missing required schema directory prepr/schema or contains no JSON files."]}]}'
             printf '%s\n' "$report_json" > "$report_path"
           fi
-          if [ ! -f "prepr-schema-validation.log" ]; then
-            printf '%s\n' "Validation log was not produced. Check prior workflow steps for failure details." > prepr-schema-validation.log
-          fi
 
           if [ "${{ steps.validate.outcome }}" = "success" ]; then
             validation_result="success"
@@ -122,25 +116,6 @@ jobs:
             echo "$report_json"
             echo EOF
           } >> "$GITHUB_OUTPUT"
-
-          {
-            echo "## Prepr Schema Validation"
-            echo ""
-            echo "- Result: \`$validation_result\`"
-            echo "- Files checked: \`$files_checked\`"
-            echo "- Invalid files: \`$invalid_files\`"
-            echo "- Workflow SHA: \`${{ steps.metadata.outputs.workflow_sha }}\`"
-            echo "- Workflow ref: \`${{ steps.metadata.outputs.workflow_ref }}\`"
-            echo "- Spec file: \`${SPEC_FILE}\`"
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload validation report artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: prepr-schema-validation-report
-          path: repository/prepr-schema-validation-report.json
-          if-no-files-found: error
 
       - name: Fail when invalid
         if: steps.validate.outcome != 'success'
