@@ -20,12 +20,12 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - 'prepr/schema/**/*.json'
+      - 'prepr/schema/*.json'
   push:
     branches:
       - main
     paths:
-      - 'prepr/schema/**/*.json'
+      - 'prepr/schema/*.json'
 
 jobs:
   validate-prepr-schema:
@@ -62,7 +62,7 @@ name: Validate and notify
 on:
   pull_request:
     paths:
-      - 'prepr/schema/**/*.json'
+      - 'prepr/schema/*.json'
 
 jobs:
   validate:
