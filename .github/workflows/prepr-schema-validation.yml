@@ -42,26 +42,11 @@ jobs:
         with:
           path: repository
 
-      - name: Resolve validator ref
-        id: resolve_ref
-        shell: bash
-        env:
-          WORKFLOW_REF: ${{ github.workflow_ref }}
-        run: |
-          set -euo pipefail
-          ref_part="${WORKFLOW_REF##*@}"
-          case "${ref_part}" in
-            refs/tags/*) effective_ref="${ref_part#refs/tags/}" ;;
-            refs/heads/*) effective_ref="${ref_part#refs/heads/}" ;;
-            *) effective_ref="${ref_part}" ;;
-          esac
-          echo "validator_ref=${effective_ref}" >> "$GITHUB_OUTPUT"
-
       - name: Checkout validation workflow repository
         uses: actions/checkout@v6
         with:
           repository: preprio/action-schema-validation
-          ref: ${{ steps.resolve_ref.outputs.validator_ref }}
+          ref: v1
           path: validator-repo
 
       - name: Setup Node.js
@@ -77,7 +62,7 @@ jobs:
         run: |
           set -euo pipefail
           workflow_sha="$(git -C validator-repo rev-parse HEAD)"
-          workflow_ref="${{ steps.resolve_ref.outputs.validator_ref }}"
+          workflow_ref="v1"
           echo "Workflow repository SHA: ${workflow_sha}"
           echo "Workflow repository ref: ${workflow_ref}"
           echo "Schema spec file: ${SPEC_FILE}"
