@@ -45,7 +45,7 @@ jobs:
       - name: Checkout validation workflow repository
         uses: actions/checkout@v6
         with:
-          repository: preprio/workflow_schema_validation
+          repository: preprio/action-schema-validation
           ref: ${{ github.workflow_sha }}
           path: validator-repo
 

@@ -22,7 +22,7 @@ on:
 
 jobs:
   validate-prepr-schema:
-    uses: preprio/workflow_schema_validation/.github/workflows/prepr-schema-validation.yml@v1
+    uses: preprio/action-schema-validation/.github/workflows/prepr-schema-validation.yml@v1
 ```
 
 ## Scope of this workflow
@@ -59,7 +59,7 @@ on:
 
 jobs:
   validate:
-    uses: preprio/workflow_schema_validation/.github/workflows/prepr-schema-validation.yml@v1
+    uses: preprio/action-schema-validation/.github/workflows/prepr-schema-validation.yml@v1
 
   notify:
     runs-on: ubuntu-latest
