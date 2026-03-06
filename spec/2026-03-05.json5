@@ -932,7 +932,10 @@
               },
 
               "default_value": {
-                "type": "integer",
+                "oneOf": [
+                  { "type": "number" },
+                  { "type": "string", "pattern": "^-?[0-9]+(?:\\.[0-9]+)?$" }
+                ],
                 "description": "Default value for new items"
               },
 
