@@ -4,14 +4,36 @@
   "title": "Prepr Schema File",
   "description": "JSON Schema for Prepr CMS schema files (Models, Components, Enum, Remote Source)",
 
-  "oneOf": [
-    { "$ref": "#/definitions/Model" },
-    { "$ref": "#/definitions/Component" },
-    { "$ref": "#/definitions/Asset" },
-    { "$ref": "#/definitions/Enum" },
-    { "$ref": "#/definitions/RemoteSource" }
+  "type": "object",
+  "required": ["label"],
+  "properties": {
+    "label": {
+      "type": "string",
+      "enum": ["Model", "Component", "Asset", "Enum", "RemoteSource"]
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "label": { "const": "Model" } } },
+      "then": { "$ref": "#/definitions/Model" }
+    },
+    {
+      "if": { "properties": { "label": { "const": "Component" } } },
+      "then": { "$ref": "#/definitions/Component" }
+    },
+    {
+      "if": { "properties": { "label": { "const": "Asset" } } },
+      "then": { "$ref": "#/definitions/Asset" }
+    },
+    {
+      "if": { "properties": { "label": { "const": "Enum" } } },
+      "then": { "$ref": "#/definitions/Enum" }
+    },
+    {
+      "if": { "properties": { "label": { "const": "RemoteSource" } } },
+      "then": { "$ref": "#/definitions/RemoteSource" }
+    }
   ],
-
   "definitions": {
 
     "Model": {
@@ -28,7 +50,7 @@
 
         "ref": {
           "type": "string",
-          "pattern": "uuid",
+          "format": "uuid",
           "description": "This ID is used when an object is being renamed, if the ref stays the same, the schema will rename the object instead of creating a new one"
         },
 
@@ -150,6 +172,12 @@
           "description": "If enabled editors can run content check"
         },
 
+        "seo_score": {
+          "type": "boolean",
+          "default": false,
+          "description": "If enabled editors see a SEO score"
+        },
+
         "visible": {
           "type": "boolean",
           "default": true,
@@ -202,7 +230,7 @@
 
         "ref": {
           "type": "string",
-          "pattern": "uuid",
+          "format": "uuid",
           "description": "This ID is used when an object is being renamed, if the ref stays the same, the schema will rename the object instead of creating a new one"
         },
 
@@ -290,6 +318,12 @@
           "description": "If enabled content of the fields can be localized"
         },
 
+        "ref": {
+          "type": "string",
+          "format": "uuid",
+          "description": "This ID is used when an object is being renamed, if the ref stays the same, the schema will rename the object instead of creating a new one"
+        },
+
         "fields": {
           "type": "array",
           "items": { "$ref": "#/definitions/Field" }
@@ -312,7 +346,7 @@
 
         "ref": {
           "type": "string",
-          "pattern": "uuid",
+          "format": "uuid",
           "description": "This ID is used when an object is being renamed, if the ref stays the same, the schema will rename the object instead of creating a new one"
         },
 
@@ -376,12 +410,12 @@
       "properties": {
 
         "label": {
-          "const": "Model"
+          "const": "RemoteSource"
         },
 
         "ref": {
           "type": "string",
-          "pattern": "uuid",
+          "format": "uuid",
           "description": "This ID is used when an object is being renamed, if the ref stays the same, the schema will rename the object instead of creating a new one"
         },
 
@@ -407,135 +441,53 @@
           "description": "Schema version (e.g., 2025-04-09)"
         },
 
-        "single_instance": {
-          "type": "boolean",
-          "default": false,
-          "description": "Only one content item allowed"
-        },
-
-        "type": {
-          "type": "string",
-          "enum": ["model", "enum", "asset", "remote_source"],
-          "default": "model",
-          "description": "Content model type"
-        },
-
         "description": {
           "type": "string",
           "maxLength": 50,
           "description": "Editorial description for the object"
         },
 
-        "folder": {
-          "type": "string",
-          "maxLength": 50,
-          "description": "Name of the folder, the object could be added to"
+        "fields": {
+          "type": ["array", "null"],
+          "items": { "$ref": "#/definitions/Field" }
         },
 
-        "appearance_image": {
-          "type": "string",
-          "format": "uri",
-          "description": "Image URL for visual appearance"
+        "remote_source_active": {
+          "type": "boolean"
         },
 
-        "appearance_tag": {
-          "type": "string",
-          "maxLength": 50,
-          "description": "Tag for appearance customization"
+        "remote_source_button_text": {
+          "type": "string"
         },
 
-        "slug": {
-          "type": "string",
-          "description": "Slug template (e.g., blog/{title}/, {parent_page.slug}/{internal_title}/)"
-        },
-
-        "slug_postfix": {
-          "type": "boolean",
-          "default": true,
-          "description": "If enabled, the slug will always be postfixed with a forward slash"
-        },
-
-        "lock_content_item": {
-          "type": "boolean",
-          "default": false,
-          "description": "If enabled content items can't be deleted"
-        },
-
-        "previewing": {
-          "type": "boolean",
-          "default": true,
-          "description": "If enabled, editors can use live preview"
-        },
-
-        "workflow": {
-          "type": "boolean",
-          "default": true,
-          "description": "If enabled, workflow stages can be added to the items"
-        },
-
-        "scheduling": {
-          "type": "boolean",
-          "default": true,
-          "description": "If enabled items can be scheduled"
-        },
-
-        "engagement_insights": {
-          "type": "boolean",
-          "default": false,
-          "description": "If enabled metrics can be viewed"
-        },
-
-        "commenting": {
-          "type": "boolean",
-          "default": true,
-          "description": "If enabled comments can be added"
-        },
-
-        "versioning": {
-          "type": "boolean",
-          "default": true,
-          "description": "If enabled items will be versioned and can be restored"
-        },
-
-        "content_check": {
-          "type": "boolean",
-          "default": false,
-          "description": "If enabled editors can run content check"
-        },
-
-        "visible": {
-          "type": "boolean",
-          "default": true,
-          "description": "If disabled editors can't make an item from the item list of this type"
-        },
-
-        "review_urls": {
+        "remote_source_domains": {
           "type": "array",
           "items": {
-            "type": "object",
-            "required": ["body", "url", "live_preview"],
-            "properties": {
-              "body": {
-                "type": "string",
-                "description": "Editorial label for this review URL"
-              },
-              "url": {
-                "type": "string",
-                "format": "uri"
-              },
-              "live_preview": {
-                "type": "boolean",
-                "default": true,
-                "description": "If enabled this URL can be used in the visual editor"
-              }
-            }
-          },
-          "description": "Preview URLs used to view the item externally or in the visual editor"
+            "type": "string"
+          }
         },
 
-        "fields": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/Field" }
+        "remote_source_headers": {
+          "type": ["object", "null"],
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+
+        "remote_source_icon": {
+          "type": "string"
+        },
+
+        "remote_source_last_sync": {
+          "type": "integer"
+        },
+
+        "remote_source_sync": {
+          "type": "boolean"
+        },
+
+        "remote_source_url": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -558,12 +510,12 @@
 
         "field_state": {
           "default": "read_write",
-          "enum": ["read_write", "read_only", "developer_only"],
+          "enum": ["read_write", "read_only", "developer_only", "remote_source_hidden"],
           "description": "Field edit permissions, defaults to read_write"
         },
 
         "description": {
-          "type": "string",
+          "type": ["string", "null"],
           "description": "Editorial Help text"
         },
 
@@ -1275,9 +1227,9 @@
           }
         },
 
-        // RemoteContent (checked)
+        // ContentIntegration (checked)
         {
-          "if": { "properties": { "type": { "const": "RemoteContent" } } },
+          "if": { "properties": { "type": { "const": "ContentIntegration" } } },
           "then": {
 
             "required": ["remote_source"],
@@ -1354,15 +1306,22 @@
                     "H6",
                     "Heading",
                     "Html",
+                    "HubSpotEmbed",
                     "InstagramPost",
+                    "NavigationItem",
                     "Paragraph",
+                    "PipedriveEmbed",
                     "Photo",
+                    "Quote",
+                    "Resource",
                     "SoundCloudPost",
                     "SpotifyPlaylist",
+                    "Text",
                     "TextArea",
                     "ThreadsPost",
                     "TikTokPost",
                     "TwitterPost",
+                    "TypeformEmbed",
                     "Video",
                     "VimeoPost",
                     "YouTubePost",
@@ -1397,7 +1356,7 @@
                     "label": {
                       "type" : "string",
                       "enum" : [
-                        "Component", "ContentModel"
+                        "Component", "Model", "RemoteSource"
                       ]
                     },
                     "ref": {
@@ -1513,6 +1472,7 @@
         "Enum",
         "Asset",
         "ContentReference",
+        "ContentIntegration",
         "Stack",
         "Component",
         "ElementBox",
@@ -1562,7 +1522,7 @@
         },
 
         "label": {
-          "enum": ["ContentModel", "Component"],
+          "enum": ["Model", "Component", "RemoteSource"],
           "description": "Reference type"
         },
 
@@ -1596,7 +1556,7 @@
       "oneOf": [
         {
           "properties": {
-            "label": { "const": "ContentModel" }
+            "label": { "const": "Model" }
           },
           "required": ["body_singular"]
         },
@@ -1605,6 +1565,12 @@
             "label": { "const": "Component" }
           },
           "required": ["api_id"]
+        },
+        {
+          "properties": {
+            "label": { "const": "RemoteSource" }
+          },
+          "required": ["body_singular"]
         }
       ]
     },
@@ -1646,7 +1612,7 @@
 
           "type": {
             "type" : "string",
-            "enum": ["Boolean", "Enum", "Text", "Integer", "Float"],
+            "enum": ["Boolean", "Enum", "Text", "Integer", "Float", "Publication", "Coordinates", "ElementBox", "TagBox"],
             "description": "Field type being checked (not an operator!)"
           },
 
@@ -1689,11 +1655,11 @@
     },
 
     "OpenAIOptions": {
-      "type": "object",
+      "type": ["object", "null"],
       "properties": {
 
         "translate": {
-          "type": "boolean",
+          "enum": [true, false, "0", "1"],
           "default": true,
           "description": "Enable translation"
         },
