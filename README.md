@@ -2,6 +2,13 @@
 
 GitHub Actions workflow that validates JSON files in `/prepr/schema` against the Prepr schema spec.
 
+## Why use this GitHub Action
+
+- Validate schema changes early in pull requests and before merges.
+- Enforce consistent schema quality with one workflow across repositories.
+- Get file-level error output that is easy to review and fix.
+- Prevent invalid schema updates from reaching `main`.
+
 ## Install in your repository
 
 Create `.github/workflows/prepr-schema-validation.yml` in your repository:
