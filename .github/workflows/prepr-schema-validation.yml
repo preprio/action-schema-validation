@@ -42,11 +42,26 @@ jobs:
         with:
           path: repository
 
+      - name: Resolve validator ref
+        id: resolve_ref
+        shell: bash
+        env:
+          WORKFLOW_REF: ${{ github.workflow_ref }}
+        run: |
+          set -euo pipefail
+          ref_part="${WORKFLOW_REF##*@}"
+          case "${ref_part}" in
+            refs/tags/*) effective_ref="${ref_part#refs/tags/}" ;;
+            refs/heads/*) effective_ref="${ref_part#refs/heads/}" ;;
+            *) effective_ref="${ref_part}" ;;
+          esac
+          echo "validator_ref=${effective_ref}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout validation workflow repository
         uses: actions/checkout@v6
         with:
           repository: preprio/action-schema-validation
-          ref: ${{ github.workflow_sha }}
+          ref: ${{ steps.resolve_ref.outputs.validator_ref }}
           path: validator-repo
 
       - name: Setup Node.js
@@ -57,12 +72,17 @@ jobs:
           cache-dependency-path: validator-repo/package-lock.json
 
       - name: Output workflow and spec version
+        id: metadata
         shell: bash
         run: |
           set -euo pipefail
-          workflow_sha="${{ github.workflow_sha }}"
+          workflow_sha="$(git -C validator-repo rev-parse HEAD)"
+          workflow_ref="${{ steps.resolve_ref.outputs.validator_ref }}"
           echo "Workflow repository SHA: ${workflow_sha}"
+          echo "Workflow repository ref: ${workflow_ref}"
           echo "Schema spec file: ${SPEC_FILE}"
+          echo "workflow_sha=${workflow_sha}" >> "$GITHUB_OUTPUT"
+          echo "workflow_ref=${workflow_ref}" >> "$GITHUB_OUTPUT"
 
       - name: Install validator dependencies
         working-directory: validator-repo
@@ -118,7 +138,8 @@ jobs:
             echo "- Result: \`$validation_result\`"
             echo "- Files checked: \`$files_checked\`"
             echo "- Invalid files: \`$invalid_files\`"
-            echo "- Workflow SHA: \`${{ github.workflow_sha }}\`"
+            echo "- Workflow SHA: \`${{ steps.metadata.outputs.workflow_sha }}\`"
+            echo "- Workflow ref: \`${{ steps.metadata.outputs.workflow_ref }}\`"
             echo "- Spec file: \`${SPEC_FILE}\`"
           } >> "$GITHUB_STEP_SUMMARY"
 
