@@ -10,6 +10,7 @@ Create `.github/workflows/prepr-schema-validation.yml` in your repository:
 name: Validate Prepr schema
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - 'prepr/schema/**/*.json'
