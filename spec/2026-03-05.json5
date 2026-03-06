@@ -1698,19 +1698,11 @@
             "description": "Show the field if the content matches the regex"
           }
         },
-        "oneOf": [
-          {
-            "properties": {
-              "type": { "const": "Boolean" }
-            },
-            "required": ["eq"]
-          },
-          {
-            "properties": {
-              "type": { "const": "Enum" }
-            },
-            "required": ["in"]
-          }
+        "anyOf": [
+          { "required": ["filled"] },
+          { "required": ["eq"] },
+          { "required": ["in"] },
+          { "required": ["regex"] }
         ]
       }
     },
