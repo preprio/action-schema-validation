@@ -1,6 +1,6 @@
-# Prepr Schema Validation Workflow
+# Prepr Schema Validation
 
-GitHub workflow that validates JSON files in `/prepr/schema` against the Prepr schema spec.
+GitHub Actions workflow that validates JSON files in `/prepr/schema` against the Prepr schema spec.
 
 ## Install in your repository
 
@@ -22,16 +22,21 @@ on:
 
 jobs:
   validate-prepr-schema:
-    uses: prepr/workflow_schema_validation/.github/workflows/prepr-schema-validation.yml@main
+    uses: preprio/workflow_schema_validation/.github/workflows/prepr-schema-validation.yml@v1
 ```
 
-## What happens
+## Scope of this workflow
 
 - Every JSON file under `/prepr/schema` is validated.
 - Validation errors are listed per file.
-- Any validation error fails the GitHub job.
-- Missing `/prepr/schema` fails the job with a clear error.
-- Empty `/prepr/schema` (no `.json` files) fails the job with a clear error.
+- Any validation error fails the job.
+- Missing `/prepr/schema` fails the job.
+- Empty `/prepr/schema` (no `.json` files) fails the job.
+- GraphQL typenames must be unique across `Model`, `Enum`, `RemoteSource`, and `Component` files:
+  - `Model`: `body_singular`, `body_plural`
+  - `Enum`: `body_singular`
+  - `RemoteSource`: `body_singular`
+  - `Component`: `api_id`
 
 ## Workflow outputs
 
@@ -54,7 +59,7 @@ on:
 
 jobs:
   validate:
-    uses: prepr/workflow_schema_validation/.github/workflows/prepr-schema-validation.yml@main
+    uses: preprio/workflow_schema_validation/.github/workflows/prepr-schema-validation.yml@v1
 
   notify:
     runs-on: ubuntu-latest
@@ -72,3 +77,7 @@ jobs:
 ## Support
 
 Questions or issues: use [GitHub Issues](../../issues)
+
+## Versioning
+
+Use a version tag when referencing the workflow (`@v1`, `@v1.x.y`), not a branch name.

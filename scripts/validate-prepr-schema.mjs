@@ -48,6 +48,36 @@ function formatAjvError(error) {
   return `${error.instancePath || '/'} ${error.message || 'is invalid'}`;
 }
 
+function collectRootGraphqlNames(relativeFile, payload) {
+  if (!payload || typeof payload !== 'object') {
+    return [];
+  }
+
+  const label = payload.label;
+  const rootsByLabel = {
+    Model: ['body_singular', 'body_plural'],
+    Enum: ['body_singular'],
+    RemoteSource: ['body_singular'],
+    Component: ['api_id']
+  };
+  const properties = rootsByLabel[label] || [];
+  const names = [];
+
+  for (const property of properties) {
+    const value = payload[property];
+    if (typeof value === 'string' && value.trim() !== '') {
+      names.push({
+        file: relativeFile,
+        label,
+        property,
+        value
+      });
+    }
+  }
+
+  return names;
+}
+
 async function main() {
   const schemaPath = getArg('--schema');
   const targetPath = getArg('--target', 'prepr/schema');
@@ -104,13 +134,23 @@ async function main() {
   addFormats(ajv);
   const validate = ajv.compile(schema);
 
-  let invalidCount = 0;
+  const errorsByFile = new Map();
+  const fileOrder = [];
+  const rootNameEntries = [];
   const report = {
     targetPath,
     filesChecked: files.length,
     invalidFiles: [],
     isValid: true
   };
+
+  function addFileError(file, message) {
+    if (!errorsByFile.has(file)) {
+      errorsByFile.set(file, []);
+      fileOrder.push(file);
+    }
+    errorsByFile.get(file).push(message);
+  }
 
   for (const file of files) {
     const relativeFile = path.relative(process.cwd(), file);
@@ -120,35 +160,61 @@ async function main() {
       const text = await fs.readFile(file, 'utf8');
       payload = JSON.parse(text);
     } catch (error) {
-      invalidCount += 1;
-      report.invalidFiles.push({
-        file: relativeFile,
-        errors: [`Invalid JSON: ${error.message}`]
-      });
-      console.error(`\n${relativeFile}`);
-      console.error(`  - Invalid JSON: ${error.message}`);
-      console.error('');
+      addFileError(relativeFile, `Invalid JSON: ${error.message}`);
       continue;
     }
 
+    rootNameEntries.push(...collectRootGraphqlNames(relativeFile, payload));
+
     const valid = validate(payload);
     if (!valid) {
-      invalidCount += 1;
-      console.error(`\n${relativeFile}`);
-      const fileErrors = [];
       for (const error of validate.errors || []) {
         const message = formatAjvError(error);
-        fileErrors.push(message);
-        console.error(`  - ${message}`);
+        addFileError(relativeFile, message);
       }
-      console.error('');
-      report.invalidFiles.push({
-        file: relativeFile,
-        errors: fileErrors
-      });
     }
   }
 
+  const nameUsage = new Map();
+  for (const entry of rootNameEntries) {
+    const items = nameUsage.get(entry.value) || [];
+    items.push(entry);
+    nameUsage.set(entry.value, items);
+  }
+
+  for (const [name, entries] of nameUsage.entries()) {
+    if (entries.length < 2) {
+      continue;
+    }
+
+    for (const entry of entries) {
+      const conflicts = entries
+        .filter((other) => !(other.file === entry.file && other.property === entry.property && other.label === entry.label))
+        .map((other) => `${other.file} (${other.label}.${other.property})`);
+      if (conflicts.length === 0) {
+        continue;
+      }
+      addFileError(
+        entry.file,
+        `GraphQL root name conflict for "${name}": also used in ${conflicts.join(', ')}`
+      );
+    }
+  }
+
+  for (const file of fileOrder) {
+    console.error(`\n${file}`);
+    for (const message of errorsByFile.get(file) || []) {
+      console.error(`  - ${message}`);
+    }
+    console.error('');
+  }
+
+  report.invalidFiles = fileOrder.map((file) => ({
+    file,
+    errors: errorsByFile.get(file) || []
+  }));
+
+  const invalidCount = report.invalidFiles.length;
   report.isValid = invalidCount === 0;
   if (reportFile) {
     await fs.writeFile(reportFile, `${JSON.stringify(report, null, 2)}\n`, 'utf8');

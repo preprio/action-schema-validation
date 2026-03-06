@@ -16,6 +16,10 @@ on:
         description: JSON report string with file-level validation errors.
         value: ${{ jobs.validate-schema.outputs.report_json }}
 
+concurrency:
+  group: prepr-schema-validation-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -23,6 +27,7 @@ jobs:
   validate-schema:
     name: Validate JSON schema files
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     env:
       SPEC_FILE: spec/2026-03-05.json5
     outputs:
@@ -32,7 +37,7 @@ jobs:
       report_json: ${{ steps.finalize.outputs.report_json }}
 
     steps:
-      - name: Checkout repository
+      - name: Checkout schema repository
         uses: actions/checkout@v6
         with:
           path: repository
@@ -41,19 +46,21 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: preprio/workflow_schema_validation
-          ref: main
+          ref: ${{ github.workflow_sha }}
           path: validator-repo
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: latest
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: validator-repo/package-lock.json
 
-      - name: Log workflow and spec version
+      - name: Output workflow and spec version
         shell: bash
         run: |
           set -euo pipefail
-          workflow_sha="$(git -C validator-repo rev-parse HEAD)"
+          workflow_sha="${{ github.workflow_sha }}"
           echo "Workflow repository SHA: ${workflow_sha}"
           echo "Schema spec file: ${SPEC_FILE}"
 
@@ -87,6 +94,7 @@ jobs:
             files_checked="0"
             invalid_files="1"
             report_json='{"isValid":false,"filesChecked":0,"invalidFiles":[{"file":"prepr/schema","errors":["Repository is missing required schema directory prepr/schema or contains no JSON files."]}]}'
+            printf '%s\n' "$report_json" > "$report_path"
           fi
 
           if [ "${{ steps.validate.outcome }}" = "success" ]; then
@@ -103,6 +111,24 @@ jobs:
             echo "$report_json"
             echo EOF
           } >> "$GITHUB_OUTPUT"
+
+          {
+            echo "## Prepr Schema Validation"
+            echo ""
+            echo "- Result: \`$validation_result\`"
+            echo "- Files checked: \`$files_checked\`"
+            echo "- Invalid files: \`$invalid_files\`"
+            echo "- Workflow SHA: \`${{ github.workflow_sha }}\`"
+            echo "- Spec file: \`${SPEC_FILE}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload validation report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prepr-schema-validation-report
+          path: repository/prepr-schema-validation-report.json
+          if-no-files-found: error
 
       - name: Fail when invalid
         if: steps.validate.outcome != 'success'
