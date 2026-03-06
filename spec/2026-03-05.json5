@@ -18,7 +18,7 @@
 
       "type": "object",
 
-      "required": ["ref", "body", "body_singular", "label", "type"],
+      "required": ["ref", "body", "body_singular", "label"],
 
       "properties": {
 
@@ -371,7 +371,7 @@
 
       "type": "object",
 
-      "required": ["ref", "body", "body_singular", "label", "type"],
+      "required": ["ref", "body", "body_singular", "label"],
 
       "properties": {
 

@@ -23,6 +23,8 @@ jobs:
   validate-schema:
     name: Validate JSON schema files
     runs-on: ubuntu-latest
+    env:
+      SPEC_FILE: spec/2026-03-05.json5
     outputs:
       validation_result: ${{ steps.finalize.outputs.validation_result }}
       files_checked: ${{ steps.finalize.outputs.files_checked }}
@@ -47,6 +49,14 @@ jobs:
         with:
           node-version: latest
 
+      - name: Log workflow and spec version
+        shell: bash
+        run: |
+          set -euo pipefail
+          workflow_sha="$(git -C validator-repo rev-parse HEAD)"
+          echo "Workflow repository SHA: ${workflow_sha}"
+          echo "Schema spec file: ${SPEC_FILE}"
+
       - name: Install validator dependencies
         working-directory: validator-repo
         run: npm ci
@@ -57,7 +67,7 @@ jobs:
         working-directory: validator-repo
         run: |
           node scripts/validate-prepr-schema.mjs \
-            --schema spec/2026-03-05.json5 \
+            --schema "${SPEC_FILE}" \
             --target ../repository/prepr/schema \
             --report-file ../repository/prepr-schema-validation-report.json
 
