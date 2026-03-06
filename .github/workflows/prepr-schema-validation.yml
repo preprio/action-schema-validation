@@ -1,0 +1,110 @@
+name: Prepr Schema Validation
+
+on:
+  workflow_call:
+    outputs:
+      validation_result:
+        description: Validation status, either success or failure.
+        value: ${{ jobs.validate-schema.outputs.validation_result }}
+      files_checked:
+        description: Number of JSON files checked in prepr/schema.
+        value: ${{ jobs.validate-schema.outputs.files_checked }}
+      invalid_files:
+        description: Number of invalid files found.
+        value: ${{ jobs.validate-schema.outputs.invalid_files }}
+      report_json:
+        description: JSON report string with file-level validation errors.
+        value: ${{ jobs.validate-schema.outputs.report_json }}
+
+permissions:
+  contents: read
+
+jobs:
+  validate-schema:
+    name: Validate JSON schema files
+    runs-on: ubuntu-latest
+    outputs:
+      validation_result: ${{ steps.finalize.outputs.validation_result }}
+      files_checked: ${{ steps.finalize.outputs.files_checked }}
+      invalid_files: ${{ steps.finalize.outputs.invalid_files }}
+      report_json: ${{ steps.finalize.outputs.report_json }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          path: repository
+
+      - name: Resolve workflow repository and ref
+        id: workflow_source
+        shell: bash
+        run: |
+          set -euo pipefail
+          workflow_ref='${{ github.workflow_ref }}'
+          repo="${workflow_ref%%/.github/workflows/*}"
+          ref="${workflow_ref##*@}"
+          echo "repository=${repo}" >> "$GITHUB_OUTPUT"
+          echo "ref=${ref}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout validation workflow repository
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ steps.workflow_source.outputs.repository }}
+          ref: ${{ steps.workflow_source.outputs.ref }}
+          path: validator-repo
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: latest
+
+      - name: Install validator dependencies
+        working-directory: validator-repo
+        run: npm ci
+
+      - name: Validate schema files
+        id: validate
+        continue-on-error: true
+        working-directory: validator-repo
+        run: |
+          node scripts/validate-prepr-schema.mjs \
+            --schema spec/2025-03-05.json5 \
+            --target ../repository/prepr/schema \
+            --report-file ../repository/prepr-schema-validation-report.json
+
+      - name: Publish validation outputs
+        id: finalize
+        if: always()
+        shell: bash
+        working-directory: repository
+        run: |
+          set -euo pipefail
+          report_path="prepr-schema-validation-report.json"
+          if [ -f "$report_path" ]; then
+            files_checked="$(node -p "const fs=require('node:fs'); const r=JSON.parse(fs.readFileSync('$report_path','utf8')); r.filesChecked")"
+            invalid_files="$(node -p "const fs=require('node:fs'); const r=JSON.parse(fs.readFileSync('$report_path','utf8')); r.invalidFiles.length")"
+            report_json="$(cat "$report_path")"
+          else
+            files_checked="0"
+            invalid_files="1"
+            report_json='{"isValid":false,"filesChecked":0,"invalidFiles":[{"file":"prepr/schema","errors":["Repository is missing required schema directory prepr/schema or contains no JSON files."]}]}'
+          fi
+
+          if [ "${{ steps.validate.outcome }}" = "success" ]; then
+            validation_result="success"
+          else
+            validation_result="failure"
+          fi
+
+          echo "validation_result=${validation_result}" >> "$GITHUB_OUTPUT"
+          echo "files_checked=${files_checked}" >> "$GITHUB_OUTPUT"
+          echo "invalid_files=${invalid_files}" >> "$GITHUB_OUTPUT"
+          {
+            echo 'report_json<<EOF'
+            echo "$report_json"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Fail when invalid
+        if: steps.validate.outcome != 'success'
+        run: exit 1

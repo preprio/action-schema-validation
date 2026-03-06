@@ -1,0 +1,16 @@
+{
+  "name": "prepr-workflow-schema-validation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reusable GitHub workflow for validating Prepr schema JSON files",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/validate-prepr-schema.mjs"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "json5": "^2.2.3"
+  }
+}

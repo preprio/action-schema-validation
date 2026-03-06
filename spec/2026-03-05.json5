@@ -1,0 +1,1548 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://prepr.io/schemas/schema-file.json",
+  "title": "Prepr Schema File",
+  "description": "JSON Schema for Prepr CMS schema files (Models, Components, Enum, Remote Source)",
+
+  "oneOf": [
+    { "$ref": "#/definitions/ContentModel" },
+    { "$ref": "#/definitions/Component" },
+    { "$ref": "#/definitions/Asset" },
+    { "$ref": "#/definitions/Enum" }
+  ],
+
+  "definitions": {
+
+    "ContentModel": {
+
+      "type": "object",
+
+      "required": ["ref", "body", "body_singular", "label", "type"],
+
+      "properties": {
+
+        "label": {
+          "const": "ContentModel"
+        },
+
+        "ref": {
+          "type": "string",
+          "pattern": "uuid",
+          "description": "This ID is used when an object is being renamed, if the ref stays the same, the schema will rename the object instead of creating a new one"
+        },
+
+        "body": {
+          "type": "string",
+          "description": "Display name (has to be unique within the whole schema)"
+        },
+
+        "body_singular": {
+          "type": "string",
+          "pattern": "^[_A-Za-z][_0-9A-Za-z]*$",
+          "description": "API singular name (GraphQL identifier, has to be unique within the whole schema)"
+        },
+
+        "body_plural": {
+          "type": "string",
+          "description": "API plural name (GraphQL collection name, has to be unique within the whole schema)"
+        },
+
+        "schema_version": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "Schema version (e.g., 2025-04-09)"
+        },
+
+        "single_instance": {
+          "type": "boolean",
+          "default": false,
+          "description": "Only one content item allowed"
+        },
+
+        "type": {
+          "type": "string",
+          "enum": ["model", "enum", "asset", "remote_source"],
+          "default": "model",
+          "description": "Content model type"
+        },
+
+        "description": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Editorial description for the object"
+        },
+
+        "folder": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Name of the folder, the object could be added to"
+        },
+
+        "appearance_image": {
+          "type": "string",
+          "format": "uri",
+          "description": "Image URL for visual appearance"
+        },
+
+        "appearance_tag": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Tag for appearance customization"
+        },
+
+        "slug": {
+          "type": "string",
+          "description": "Slug template (e.g., blog/{title}/, {parent_page.slug}/{internal_title}/)"
+        },
+
+        "slug_postfix": {
+          "type": "boolean",
+          "default": true,
+          "description": "If enabled, the slug will always be postfixed with a forward slash"
+        },
+
+        "lock_content_item": {
+          "type": "boolean",
+          "default": false,
+          "description": "If enabled content items can't be deleted"
+        },
+
+        "previewing": {
+          "type": "boolean",
+          "default": true,
+          "description": "If enabled, editors can use live preview"
+        },
+
+        "workflow": {
+          "type": "boolean",
+          "default": true,
+          "description": "If enabled, workflow stages can be added to the items"
+        },
+
+        "scheduling": {
+          "type": "boolean",
+          "default": true,
+          "description": "If enabled items can be scheduled"
+        },
+
+        "engagement_insights": {
+          "type": "boolean",
+          "default": false,
+          "description": "If enabled metrics can be viewed"
+        },
+
+        "commenting": {
+          "type": "boolean",
+          "default": true,
+          "description": "If enabled comments can be added"
+        },
+
+        "versioning": {
+          "type": "boolean",
+          "default": true,
+          "description": "If enabled items will be versioned and can be restored"
+        },
+
+        "content_check": {
+          "type": "boolean",
+          "default": false,
+          "description": "If enabled editors can run content check"
+        },
+
+        "visible": {
+          "type": "boolean",
+          "default": true,
+          "description": "If disabled editors can't make an item from the item list of this type"
+        },
+
+        "review_urls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["body", "url", "live_preview"],
+            "properties": {
+              "body": {
+                "type": "string",
+                "description": "Editorial label for this review URL"
+              },
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "live_preview": {
+                "type": "boolean",
+                "default": true,
+                "description": "If enabled this URL can be used in the visual editor"
+              }
+            }
+          },
+          "description": "Preview URLs used to view the item externally or in the visual editor"
+        },
+
+        "fields": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Field" }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "Component": {
+
+      "type": "object",
+
+      "required": ["body", "api_id", "label", "icon"],
+
+      "properties": {
+
+        "label": {
+          "const": "Component"
+        },
+
+        "ref": {
+          "type": "string",
+          "pattern": "uuid",
+          "description": "This ID is used when an object is being renamed, if the ref stays the same, the schema will rename the object instead of creating a new one"
+        },
+
+        "body": {
+          "type": "string",
+          "description": "Display name (has to be unique within the whole schema)"
+        },
+
+        "api_id": {
+          "type": "string",
+          "pattern": "^[_A-Za-z][_0-9A-Za-z]*$",
+          "description": "GraphQL type name (PascalCase)"
+        },
+
+        "schema_version": {
+          "type": "string",
+          "description": "Schema version (e.g., 2025-04-09)",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+
+        "icon": {
+          "type": "string",
+          "description": "FontAwesome icon (e.g., far fa-computer-mouse, fas fa-text-size)"
+        },
+
+        "description": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Editorial description for the object"
+        },
+
+        "folder": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Name of the folder, the object could be added to"
+        },
+
+        "appearance_image": {
+          "type": "string",
+          "format": "uri",
+          "description": "Image URL for visual appearance"
+        },
+
+        "appearance_tag": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Tag for appearance customization"
+        },
+
+        "fields": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Field" }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "Asset": {
+
+      "type": "object",
+
+      "required": ["label"],
+
+      "properties": {
+
+        "label": {
+          "const": "Asset"
+        },
+
+        "folder": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Name of the folder, the object could be added to"
+        },
+
+        "schema_version": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "Schema version (e.g., 2025-04-09)"
+        },
+
+        "localization": {
+          "type": "boolean",
+          "default": true,
+          "description": "If enabled content of the fields can be localized"
+        },
+
+        "fields": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Field" }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "Enum": {
+
+      "type": "object",
+
+      "required": ["label", "enum", "body", "body_singular"],
+
+      "properties": {
+
+        "label": {
+          "const": "Enum"
+        },
+
+        "ref": {
+          "type": "string",
+          "pattern": "uuid",
+          "description": "This ID is used when an object is being renamed, if the ref stays the same, the schema will rename the object instead of creating a new one"
+        },
+
+        "body": {
+          "type": "string",
+          "description": "Display name (has to be unique within the whole schema)"
+        },
+
+        "body_singular": {
+          "type": "string",
+          "pattern": "^[_A-Za-z][_0-9A-Za-z]*$",
+          "description": "GraphQL type name (has to be unique within the whole schema)"
+        },
+
+        "schema_version": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "Schema version (e.g., 2025-04-09)"
+        },
+
+        "folder": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Name of the folder, the object could be added to"
+        },
+
+        "enum": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["value", "display"],
+            "properties": {
+              "value": {
+                "type": "string",
+                "description": "Enum value (UPPERCASE)"
+              },
+              "display": {
+                "type": "string",
+                "description": "Editorial label for the value"
+              }
+            }
+          },
+          "description": "Array of the possible ENUM values"
+        },
+
+        "enum_as_string": {
+          "type": "boolean",
+          "default": false,
+          "description": "If enabled the GraphQL type will be set to string instead of ENUM"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "Field": {
+      "type": "object",
+
+      "required": ["type"],
+
+      "properties": {
+
+        "type": { "$ref": "#/definitions/FieldType" },
+
+        "required": {
+          "type": "boolean",
+          "default": false,
+          "description": "If enabled the field is required"
+        },
+
+        "field_state": {
+          "default": "read_write",
+          "enum": ["read_write", "read_only", "developer_only"],
+          "description": "Field edit permissions, defaults to read_write"
+        },
+
+        "description": {
+          "type": "string",
+          "description": "Editorial Help text"
+        },
+
+        "description_appearance": {
+          "enum": ["help_text", "tooltip", "placeholder"],
+          "description": "Display options for the Help text"
+        },
+
+        "body": {
+          "type": "string",
+          "description": "Display name"
+        },
+
+        "api_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z_][a-zA-Z0-9_-]*$",
+          "description": "GraphQL identifier (snake_case) - Not required for Divider/Column/Slug/Embed/HelpText/SEO"
+        },
+
+        "appearance_conditions": {
+          "$ref": "#/definitions/AppearanceConditions"
+        },
+
+        "openai_options": {
+          "$ref": "#/definitions/OpenAIOptions"
+        }
+      },
+
+      "allOf": [
+        // Text (checked),
+        {
+          "if": { "properties": { "type": { "const": "Text" } } },
+          "then": {
+
+            "required": ["appearance", "body", "api_id"],
+
+            "properties": {
+
+              "appearance": {
+                "enum": ["single_line", "textarea", "html_editor"],
+                "description": "Text input appearance"
+              },
+
+              "default_value": {
+                "type": "string",
+                "description": "Default value for new items"
+              },
+
+              "no_html": {
+                "type": "boolean",
+                "default": false,
+                "description": "Disable (HTML/JS) scripts in the content field"
+              },
+
+              "title": {
+                "type": "boolean",
+                "default": false,
+                "description": "Use as title field"
+              },
+
+              "seo_title": {
+                "type": "boolean",
+                "default": false,
+                "description": "Use as SEO title"
+              },
+
+              "unique": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enforce uniqueness on all items within one environment"
+              },
+
+              "accept" : {
+                "type": "array",
+                "description": "If HTML is enabled, this field controls the list of HTML allowed tags",
+                "items": {
+                  "enum": [
+                    "H1",
+                    "H2",
+                    "H3",
+                    "H4",
+                    "H5",
+                    "H6",
+                    "bold",
+                    "italic",
+                    "underline",
+                    "unordered-list",
+                    "ordered-list",
+                    "link",
+                    "table",
+                    "alignment"
+                  ],
+                  "type": "string"
+                }
+              },
+
+              "min": {
+                "type": "number",
+                "description": "Validation minimum length"
+              },
+
+              "max": {
+                "type": "number",
+                "description": "Validation maximum length"
+              },
+
+              "a_b_testing": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allow the field to be A/B tested"
+              },
+
+              "regex": {
+                "type": "string",
+                "description": "Validation regex pattern"
+              }
+            }
+          }
+        },
+
+        // Slug (checked)
+        {
+          "if": { "properties": { "type": { "const": "Slug" } } },
+          "then": {
+
+            "required": ["edit_from_slash", "remove_trailing_slash", ],
+
+            "properties": {
+
+              "max": {
+                "type": "number",
+                "default": 512,
+                "description": "Validation maximum length",
+                "maximum": 512
+              },
+
+              "edit_from_slash": {
+                "type": "boolean",
+                "default": false,
+                "description": "Only editing after the last forward slash"
+              },
+
+              "remove_trailing_slash": {
+                "type": "boolean",
+                "default": true,
+                "description": "Remove trailing slash"
+              },
+
+              "regex": {
+                "type": "string",
+                "description": "Validation regex pattern"
+              }
+            }
+          }
+        },
+
+        // Tags (checked)
+        {
+          "if": { "properties": { "type": { "const": "Tags" } } },
+          "then": {
+
+            "properties": {
+
+              "appearance": {
+                "enum": ["select", "auto_suggest"],
+                "description": "Appearance of tag group if used"
+              },
+
+              "min": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2000,
+                "description": "Validation minimal count number"
+              },
+
+              "max": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2000,
+                "description": "Validation maximal count number"
+              }
+            }
+          }
+        },
+
+        // DateTime (checked)
+        {
+          "if": { "properties": { "type": { "const": "DateTime" } } },
+          "then": {
+
+            "required": ["appearance", "format"],
+
+            "properties": {
+
+              "format": {
+                "enum": ["Y-m-d", "Y-m-d H:i:s"],
+                "description": "Format with or without time"
+              },
+
+              "appearance": {
+                "enum": ["date", "datetime"],
+                "description": "Appearance of date field"
+              },
+
+              "multiple": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allow more dates to be set. If enabled the GraphQL type changes to list."
+              }
+            }
+          }
+        },
+
+        // DateTimeRange (checked)
+        {
+          "if": { "properties": { "type": { "const": "DateTimeRange" } } },
+          "then": {
+
+            "required": ["appearance", "format"],
+
+            "properties": {
+
+              "format": {
+                "enum": ["Y-m-d", "Y-m-d H:i:s"],
+                "description": "Format with or without time"
+              },
+
+              "appearance": {
+                "enum": ["date", "datetime"],
+                "description": "Appearance of date field"
+              },
+
+              "multiple": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allow more dates to be set. If enabled the GraphQL type changes to list."
+              }
+            }
+          }
+        },
+
+        // BusinessHours (checked)
+        {
+          "if": { "properties": { "type": { "const": "BusinessHours" } } },
+          "then": {
+
+            "required": [],
+          }
+        },
+
+        // Coordinates (checked)
+        {
+          "if": { "properties": { "type": { "const": "Coordinates" } } },
+          "then": {
+            "required": [],
+          }
+        },
+
+        // Color (checked)
+        {
+          "if": { "properties": { "type": { "const": "Color" } } },
+          "then": {
+            "required": [],
+          }
+        },
+
+        // HelpText (checked)
+        {
+          "if": { "properties": { "type": { "const": "HelpText" } } },
+          "then": {
+
+            "required": ["appearance"],
+
+            "properties": {
+              "appearance": {
+                "enum": ["default", "info", "warning"],
+                "description": "UI color for the HelpText block"
+              }
+            },
+
+            "not": {
+              "required": ["api_id"]
+            }
+          }
+        },
+
+        // Embed (checked)
+        {
+          "if": { "properties": { "type": { "const": "Embed" } } },
+          "then": {
+
+            "required": ["construct"],
+
+            "properties": {
+              "construct": {
+                "type": "string",
+                "description": "HTML constructor to render the embed. Editors can use this field to copy an embed code."
+              }
+            }
+          }
+        },
+
+        // TODO: FIX
+        {
+          "if": { "properties": { "type": { "const": "Form" } } },
+          "then": {
+
+            "required": ["accept", "min", "max"],
+
+            "properties": {
+
+              "accept": {
+                "type": "array",
+                "items": {
+                  "enum": ["photo", "video", "audio", "file"]
+                },
+                "description": "Accepted asset types"
+              },
+
+              "min": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2000,
+                "description": "Validation minimal count number"
+              },
+
+              "max": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2000,
+                "description": "Validation maximal count number"
+              },
+
+              "allow_align": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allow the editor to set alignment"
+              },
+
+              "allow_caption": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allow the editor to add a caption"
+              },
+
+              "allow_focal_point": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allow focal point selection"
+              },
+
+              "focal_point_required": {
+                "type": "boolean",
+                "default": false,
+                "description": "Require focal point selection"
+              },
+
+              "allow_multiple": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allow multiple assets. If enabled the GraphQL type changes to list."
+              },
+
+              "presets": {
+                "$ref": "#/definitions/ImagePresets"
+              },
+
+              "presets_change_required": {
+                "type": "boolean",
+                "default": false,
+                "description": "Require preset selection"
+              }
+
+            }
+          }
+        },
+
+
+        // Integer (checked)
+        {
+          "if": { "properties": { "type": { "const": "Integer" } } },
+          "then": {
+
+            "properties": {
+
+              "min": {
+                "type": "integer",
+                "description": "Validation minimum value"
+              },
+
+              "max": {
+                "type": "integer",
+                "description": "Validation maximum value"
+              },
+
+              "default_value": {
+                "type": "integer",
+                "description": "Default value for new items"
+              },
+
+              "unique": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enforce uniqueness on all items within one environment"
+              }
+            }
+          }
+        },
+
+        // Float (checked)
+        {
+          "if": { "properties": { "type": { "const": "Float" } } },
+          "then": {
+            "properties": {
+
+              "min": {
+                "type": "integer",
+                "description": "Validation minimum value"
+              },
+
+              "max": {
+                "type": "integer",
+                "description": "Validation maximum value"
+              },
+
+              "default_value": {
+                "type": "integer",
+                "description": "Default value for new items"
+              },
+
+              "unique": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enforce uniqueness on all items within one environment"
+              }
+            }
+          }
+        },
+
+        // Boolean (checked)
+        {
+          "if": { "properties": { "type": { "const": "Boolean" } } },
+          "then": {
+            "properties": {
+
+              "default_value": {
+                "type": "boolean",
+                "default": false,
+                "description": "Default value for new items"
+              },
+
+              "true": {
+                "type": "string",
+                "description": "Label for true state"
+              },
+
+              "false": {
+                "type": "string",
+                "description": "Label for false state"
+              }
+
+            }
+          }
+        },
+
+        // Enum (checked)
+        {
+          "if": { "properties": { "type": { "const": "Enum" } } },
+          "then": {
+
+            "required": ["enum"],
+
+            "properties": {
+
+              "enum": {
+                "type": "object",
+                "required": ["body_singular", "label", "ref"],
+                "properties": {
+                  "body_singular": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "const": "Enum"
+                  },
+                  "ref": {
+                    "type": "string"
+                  }
+                },
+                "description": "Reference to enum ContentModel"
+              },
+
+              "default_value": {
+                "type": "string",
+                "description": "Default enum value (UPPERCASE)"
+              }
+            }
+          }
+        },
+
+        // Asset (checked)
+        {
+          "if": { "properties": { "type": { "const": "Asset" } } },
+          "then": {
+
+            "required": ["accept"],
+
+            "properties": {
+
+              "accept": {
+                "type": "array",
+                "items": {
+                  "enum": ["photo", "video", "audio", "file"]
+                },
+                "description": "Accepted asset types"
+              },
+
+              "min": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2000,
+                "description": "Validation minimal count number"
+              },
+
+              "max": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2000,
+                "description": "Validation maximal count number"
+              },
+
+              "allow_align": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allow the editor to set alignment"
+              },
+
+              "allow_caption": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allow the editor to add a caption"
+              },
+
+              "allow_focal_point": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allow focal point selection"
+              },
+
+              "focal_point_required": {
+                "type": "boolean",
+                "default": false,
+                "description": "Require focal point selection"
+              },
+
+              "allow_multiple": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allow multiple assets. If enabled the GraphQL type changes to list."
+              },
+
+              "presets": {
+                "$ref": "#/definitions/ImagePresets"
+              },
+
+              "presets_change_required": {
+                "type": "boolean",
+                "default": false,
+                "description": "Require preset selection"
+              }
+            }
+          }
+        },
+
+        // ContentReference (checked, TypeReference needs to be checked too)
+        {
+          "if": { "properties": { "type": { "const": "ContentReference" } } },
+          "then": {
+
+            "required": ["types"],
+
+            "properties": {
+
+              "types": {
+                "type": "array",
+                "items": { "$ref": "#/definitions/TypeReference" },
+                "description": "Allowed content types"
+              },
+
+              "min": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2000,
+                "description": "Validation minimum items"
+              },
+
+              "max": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2000,
+                "description": "Validation maximum items"
+              },
+
+              "appearance": {
+                "default": "modal",
+                "enum": ["modal", "auto_suggest", "select"],
+                "description": "Selection UI (Modal, Auto suggest, Select (checkboxes)"
+              },
+
+              "allow_multiple": {
+                "type": "boolean",
+                "default": true,
+                "description": "Allow multiple references. If disabled the GraphQL API returns a single object."
+              },
+
+              "group": {
+                "type": "boolean",
+                "description": "Allow content to be selected from other environments in the organization"
+              }
+            }
+          }
+        },
+
+        // Stack (checked, TypeReference needs to be checked too)
+        {
+          "if": { "properties": { "type": { "const": "Stack" } } },
+          "then": {
+
+            "required": ["types"],
+
+            "properties": {
+
+              "types": {
+                "type": "array",
+                "items": { "$ref": "#/definitions/TypeReference" },
+                "description": "Allowed component/model types"
+              },
+
+              "default_value" : {
+                "type" : "array"
+              },
+
+              "min": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000,
+                "description": "Validation minimum items"
+              },
+
+              "max": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000,
+                "description": "Validation maximum items"
+              },
+
+              "allow_multiple": {
+                "type": "boolean",
+                "default": true,
+                "description": "Allow multiple items. If disabled the GraphQL API will return a single object"
+              },
+
+              "a_b_testing": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable A/B testing"
+              },
+
+              "personalization": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable personalization"
+              }
+            }
+          }
+        },
+
+        // Component (checked)
+        {
+          "if": { "properties": { "type": { "const": "Component" } } },
+          "then": {
+
+            "required": ["component"],
+
+            "properties": {
+
+              "component": {
+                "type": "object",
+                "required": ["api_id", "label", "ref"],
+                "properties": {
+                  "api_id": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "const": "Component"
+                  },
+                  "ref": {
+                    "type": "string"
+                  }
+                },
+                "description": "Reference to component"
+              },
+
+              "framed": {
+                "type": "boolean",
+                "default": true,
+                "description": "If disabled, the component fields will look like model fields inside the item editor"
+              }
+            }
+          }
+        },
+
+        // RemoteContent (checked)
+        {
+          "if": { "properties": { "type": { "const": "RemoteContent" } } },
+          "then": {
+
+            "required": ["remote_source"],
+
+            "properties": {
+
+              "remote_source": {
+                "type": "object",
+                "required": ["body_singular", "label", "ref"],
+                "properties": {
+                  "body_singular": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "const": "RemoteSource"
+                  },
+                  "ref": {
+                    "type": "string"
+                  }
+                },
+                "description": "Reference to remote source"
+              },
+
+              "min": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000,
+                "description": "Validation minimum items"
+              },
+
+              "max": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000,
+                "description": "Validation maximum items"
+              },
+
+              "allow_multiple": {
+                "type": "boolean",
+                "default": true,
+                "description": "Allow multiple references. If disabled the GraphQL API returns a single object."
+              }
+            }
+          }
+        },
+
+        // ElementBox (checked) TODO FIX TYPES DEF
+        {
+          "if": { "properties": { "type": { "const": "ElementBox" } } },
+          "then": {
+
+            "required": ["accept"],
+
+            "properties": {
+
+              "accept": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "ApplePodcast",
+                    "Asset",
+                    "Audio",
+                    "BlueskyPost",
+                    "Code",
+                    "Coordinates",
+                    "Document",
+                    "FacebookPost",
+                    "H1",
+                    "H2",
+                    "H3",
+                    "H4",
+                    "H5",
+                    "H6",
+                    "Heading",
+                    "Html",
+                    "InstagramPost",
+                    "Paragraph",
+                    "Photo",
+                    "SoundCloudPost",
+                    "SpotifyPlaylist",
+                    "TextArea",
+                    "ThreadsPost",
+                    "TikTokPost",
+                    "TwitterPost",
+                    "Video",
+                    "VimeoPost",
+                    "YouTubePost",
+                    "alignment",
+                    "bold",
+                    "italic",
+                    "link",
+                    "ordered-list",
+                    "table",
+                    "underline",
+                    "unordered-list"
+                  ]
+                },
+                "description": "Accepted element types (Html, Paragraph, bold, italic, link, etc.)"
+              },
+
+              "types": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "label",
+                    "ref"
+                  ],
+                  "properties": {
+                    "body_singular": {
+                      "type": "string"
+                    },
+                    "api_id": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type" : "string",
+                      "enum" : [
+                        "Component", "ContentModel"
+                      ]
+                    },
+                    "ref": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "description": "Embeddable components"
+              },
+
+              "allow_align": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allow the editor to set asset alignment"
+              },
+
+              "allow_caption": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allow the editor to set a caption"
+              },
+
+              "allow_focal_point": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allow the editor to set a focal point"
+              },
+
+              "focal_point_required": {
+                "type": "boolean",
+                "default": false,
+                "description": "If enabled setting a focal point is required"
+              },
+
+              "presets_change_required": {
+                "type": "boolean",
+                "default": false,
+                "description": "If enabled setting a preset is required"
+              },
+
+              "presets": {
+                "$ref": "#/definitions/ImagePresets"
+              }
+            }
+          }
+        },
+
+        // Divider (checked)
+        {
+          "if": { "properties": { "type": { "const": "Divider" } } },
+          "then": {
+
+            "required": ["appearance"],
+
+            "properties": {
+              "appearance": {
+                "enum": ["open", "closed"],
+                "description": "Section default state (open/closed)"
+              }
+            }
+          }
+        },
+
+        // Column (checked)
+        {
+          "if": { "properties": { "type": { "const": "Column" } } },
+          "then": {
+
+            "required": ["appearance"],
+
+            "properties": {
+              "appearance": {
+                "type": "integer",
+                "enum": [1,2,3,4,5],
+                "description": "Number of columns"
+              }
+            }
+          }
+        },
+
+        // SocialPosts (checked)
+        {
+          "if": {
+            "anyOf": [
+              { "properties": { "type": { "const": "TwitterPost" } } },
+              { "properties": { "type": { "const": "BlueskyPost" } } },
+              { "properties": { "type": { "const": "ThreadsPost" } } },
+              { "properties": { "type": { "const": "InstagramPost" } } },
+              { "properties": { "type": { "const": "FacebookPost" } } },
+              { "properties": { "type": { "const": "YouTubePost" } } },
+              { "properties": { "type": { "const": "VimeoPost" } } },
+              { "properties": { "type": { "const": "TikTokPost" } } },
+              { "properties": { "type": { "const": "SpotifyPlaylist" } } },
+              { "properties": { "type": { "const": "SoundCloudPost" } } },
+              { "properties": { "type": { "const": "ApplePodcast" } } }
+            ]
+          },
+          "then": {
+
+          }
+        }
+      ]
+    },
+
+    "FieldType": {
+      "type": "string",
+      "enum": [
+        "Text",
+        "Slug",
+        "Integer",
+        "Float",
+        "Boolean",
+        "Enum",
+        "Asset",
+        "ContentReference",
+        "Stack",
+        "Component",
+        "ElementBox",
+        "DateTime",
+        "DateTimeRange",
+        "Color",
+        "Coordinates",
+        "Embed",
+        "Tags",
+        "BusinessHours",
+        "TwitterPost",
+        "InstagramPost",
+        "ThreadsPost",
+        "BlueskyPost",
+        "FacebookPost",
+        "YouTubePost",
+        "TikTokPost",
+        "SoundCloudPost",
+        "VimeoPost",
+        "SpotifyPlaylist",
+        "ApplePodcast",
+        "Divider",
+        "Column",
+        "HelpText",
+
+        // Special fields
+        "Quote",
+        "Resource",
+
+        // Embeds!
+        "TypeformEmbed",
+        "HubSpotEmbed",
+        "ActiveCampaignEmbed",
+        "PipedriveEmbed"
+      ]
+    },
+
+    // TypeReference in Stack and ContentReference (checked)
+    "TypeReference": {
+      "type": "object",
+      "required": ["ref", "label", "position"],
+      "properties": {
+
+        "ref": {
+          "type": "string",
+          "description": "This ID is used when an object is being renamed, if the ref stays the same, the schema will rename the object"
+        },
+
+        "label": {
+          "enum": ["ContentModel", "Component"],
+          "description": "Reference type"
+        },
+
+        "position": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Order position"
+        },
+
+        "body_singular": {
+          "type": "string",
+          "description": "Required for ContentModel references"
+        },
+
+        "api_id": {
+          "type": "string",
+          "description": "Required for Component references"
+        },
+
+        "allow_new": {
+          "type": "boolean",
+          "default": false,
+          "description": "Allow creating new items if reference is a Model"
+        },
+
+        "allow_group": {
+          "type": "boolean",
+          "description": "Allow items to be selected from other environments if reference is a Model"
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "label": { "const": "ContentModel" }
+          },
+          "required": ["body_singular"]
+        },
+        {
+          "properties": {
+            "label": { "const": "Component" }
+          },
+          "required": ["api_id"]
+        }
+      ]
+    },
+
+    // Image Presets used in Asset field (checked)
+    "ImagePresets": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "required": ["name", "width", "height"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+
+    // AppearanceConditions (checked) TODO: CHECK WITH DANNY TYPES THAT SUPPORT EMPTY!
+    "AppearanceConditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field", "type"],
+        "properties": {
+
+          "field": {
+            "type": "string",
+            "description": "API ID of field to check"
+          },
+
+          "type": {
+            "type" : "string",
+            "enum": ["Boolean", "Enum", "Text", "Integer", "Float"],
+            "description": "Field type being checked (not an operator!)"
+          },
+
+          "eq": {
+            "type": "boolean",
+            "description": "Boolean value for Boolean conditions"
+          },
+
+          "in": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Array of enum values for Enum conditions. "
+          },
+
+          "filled" : {
+            "type" : "boolean",
+            "description": "Show the field if the set field is filled (true) or empty (false)."
+          },
+
+          "regex": {
+            "type" : "string",
+            "description": "Show the field if the content matches the regex"
+          }
+        },
+        "oneOf": [
+          {
+            "properties": {
+              "type": { "const": "Boolean" }
+            },
+            "required": ["eq"]
+          },
+          {
+            "properties": {
+              "type": { "const": "Enum" }
+            },
+            "required": ["in"]
+          }
+        ]
+      }
+    },
+
+    "OpenAIOptions": {
+      "type": "object",
+      "properties": {
+
+        "translate": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable translation"
+        },
+
+        "improve": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum" : [
+              "writing",
+              "fix_spelling_grammar",
+              "shorter",
+              "longer",
+              "simplify_language"
+            ]
+          },
+          "description": "AI improvement options"
+        },
+
+        "generate": {
+          "type": "string",
+          "description": "AI generation prompt"
+        }
+      }
+    }
+  }
+}
