@@ -534,6 +534,16 @@
           "description": "GraphQL identifier (snake_case) - Not required for Divider/Column/Slug/Embed/HelpText/SEO"
         },
 
+        "appearance_width": {
+          "type": ["integer", "null"],
+          "description": "In the Prepr UI the field will have a width as set on this value"
+        },
+
+        "appearance_start_new_row": {
+          "type": ["boolean", "null"],
+          "description": "In the Prepr UI the field will be placed on a new row"
+        },
+
         "appearance_conditions": {
           "$ref": "#/definitions/AppearanceConditions"
         },
