@@ -1724,7 +1724,7 @@
       }
     },
 
-    // AppearanceConditions (checked) TODO: CHECK WITH DANNY TYPES THAT SUPPORT EMPTY!
+    // AppearanceConditions
     "AppearanceConditions": {
       "type": "array",
       "items": {
@@ -1739,7 +1739,7 @@
 
           "type": {
             "type" : "string",
-            "enum": ["Boolean", "Enum", "Text", "Integer", "Float", "Publication", "Coordinates", "ElementBox", "TagBox"],
+            "enum": ["Boolean", "Enum", "Text", "Integer", "Float", "Publication", "Coordinates", "ElementBox", "TagBox", "Stack"],
             "description": "Field type being checked (not an operator!)"
           },
 
