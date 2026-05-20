@@ -116,25 +116,25 @@
         "ai_context": {
           "type": ["string", "null"],
           "maxLength": 500,
-          "description": "What this model represents"
+          "description": "Context that helps AI understand what this model represents"
         },
 
         "ai_goal": {
           "type": ["string", "null"],
           "maxLength": 500,
-          "description": "What this model can be used for"
+          "description": "Intended goal for AI-assisted content generation"
         },
 
         "ai_usage_rules": {
           "type": ["string", "null"],
           "maxLength": 500,
-          "description": "Short do/don’t guidance when using this model"
+          "description": "Short do and don't guidance for AI-assisted usage"
         },
 
         "ai_examples": {
           "type": ["string", "null"],
           "maxLength": 500,
-          "description": "Max 3 example content scenarios"
+          "description": "Up to 3 example content scenarios for AI guidance"
         },
 
         "slug": {
@@ -306,25 +306,25 @@
         "ai_context": {
           "type": ["string", "null"],
           "maxLength": 500,
-          "description": "What this model represents"
+          "description": "Context that helps AI understand what this component represents"
         },
 
         "ai_goal": {
           "type": ["string", "null"],
           "maxLength": 500,
-          "description": "What this model can be used for"
+          "description": "Intended goal for AI-assisted content generation"
         },
 
         "ai_usage_rules": {
           "type": ["string", "null"],
           "maxLength": 500,
-          "description": "Short do/don’t guidance when using this model"
+          "description": "Short do and don't guidance for AI-assisted usage"
         },
 
         "ai_examples": {
           "type": ["string", "null"],
           "maxLength": 500,
-          "description": "Max 3 example content scenarios"
+          "description": "Up to 3 example content scenarios for AI guidance"
         },
 
         "fields": {
