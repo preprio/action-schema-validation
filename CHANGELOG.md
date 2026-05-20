@@ -1,13 +1,23 @@
 # Changelog
 
-## 2026-03-05 revision #3
+## 2026-03-05 revision #4
 
-This is a non-breaking revision of the existing `2026-03-05` schema version.
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 20 May 2026.
 
 ### Added
 
-- Added `Stack` as a supported field type for appearance conditions. Released on 20 May 2026.
+- Added the following supported field types for appearance conditions:
+  - `Environments`
+  - `BusinessHours`
 
+
+## 2026-03-05 revision #3
+
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 20 May 2026.
+
+### Added
+
+- Added `Stack` as a supported field type for appearance conditions.
 
 ## 2026-03-05 revision #2
 
