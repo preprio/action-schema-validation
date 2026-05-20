@@ -1739,7 +1739,7 @@
 
           "type": {
             "type" : "string",
-            "enum": ["Boolean", "Enum", "Text", "Integer", "Float", "Publication", "Coordinates", "ElementBox", "TagBox", "Stack"],
+            "enum": ["Boolean", "Enum", "Text", "Integer", "Float", "Publication", "Coordinates", "ElementBox", "TagBox", "Stack", "Environments", "BusinessHours"],
             "description": "Field type being checked (not an operator!)"
           },
 
