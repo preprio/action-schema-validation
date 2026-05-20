@@ -45,8 +45,8 @@ jobs:
       - name: Checkout validation workflow repository
         uses: actions/checkout@v6
         with:
-          repository: preprio/action-schema-validation
-          ref: v1
+          repository: ${{ job.workflow_repository }}
+          ref: ${{ job.workflow_sha }}
           path: validator-repo
 
       - name: Setup Node.js
@@ -62,7 +62,7 @@ jobs:
         run: |
           set -euo pipefail
           workflow_sha="$(git -C validator-repo rev-parse HEAD)"
-          workflow_ref="v1"
+          workflow_ref="${{ job.workflow_ref }}"
           echo "Workflow repository SHA: ${workflow_sha}"
           echo "Workflow repository ref: ${workflow_ref}"
           echo "Schema spec file: ${SPEC_FILE}"
