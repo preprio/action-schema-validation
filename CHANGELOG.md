@@ -11,3 +11,9 @@ This is a non-breaking revision of the existing `2026-03-05` schema version. Rel
   - `ai_goal`
   - `ai_usage_rules`
   - `ai_examples`
+
+
+## 2026-03-10 revision #1
+
+### Added
+Two new field definitions, `appearance_width` and `appearance_start_new_row` to fields.
