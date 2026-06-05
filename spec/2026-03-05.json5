@@ -212,7 +212,7 @@
           "type": ["array", "null"],
           "items": {
             "type": "object",
-            "required": ["body", "url", "live_preview"],
+            "required": ["body", "url"],
             "properties": {
               "body": {
                 "type": "string",
@@ -508,7 +508,7 @@
         },
 
         "remote_source_domains": {
-          "type": "array",
+          "type": ["array", "null"],
           "items": {
             "type": "string"
           }
@@ -602,7 +602,7 @@
       },
 
       "allOf": [
-        // Text (checked),
+        // Text
         {
           "if": { "properties": { "type": { "const": "Text" } } },
           "then": {
@@ -670,13 +670,19 @@
               },
 
               "min": {
-                "type": "number",
-                "description": "Validation minimum length"
+                "oneOf": [
+                  { "type": "integer" },
+                  { "type": "string", "pattern": "^[0-9]+$" }
+                ],
+                "description": "Validation minimal count number"
               },
 
               "max": {
-                "type": "number",
-                "description": "Validation maximum length"
+                "oneOf": [
+                  { "type": "integer" },
+                  { "type": "string", "pattern": "^[0-9]+$" }
+                ],
+                "description": "Validation maximal count number"
               },
 
               "a_b_testing": {
@@ -884,7 +890,6 @@
           }
         },
 
-        // TODO: FIX
         {
           "if": { "properties": { "type": { "const": "Form" } } },
           "then": {
@@ -1395,7 +1400,7 @@
           }
         },
 
-        // ElementBox (checked) TODO FIX TYPES DEF
+        // ElementBox
         {
           "if": { "properties": { "type": { "const": "ElementBox" } } },
           "then": {
@@ -1427,11 +1432,9 @@
                     "Html",
                     "HubSpotEmbed",
                     "InstagramPost",
-                    "NavigationItem",
                     "Paragraph",
                     "PipedriveEmbed",
                     "Photo",
-                    "Quote",
                     "Resource",
                     "SoundCloudPost",
                     "SpotifyPlaylist",
@@ -1451,7 +1454,11 @@
                     "ordered-list",
                     "table",
                     "underline",
-                    "unordered-list"
+                    "unordered-list",
+                    // Deprecated items
+                    "CardItem",
+                    "NavigationItem",
+                    "Quote"
                   ]
                 },
                 "description": "Accepted element types (Html, Paragraph, bold, italic, link, etc.)"
@@ -1762,13 +1769,19 @@
           "regex": {
             "type" : "string",
             "description": "Show the field if the content matches the regex"
+          },
+
+          "value": {
+            "type" : "string",
+            "description": "Show the field if the environment ID matches one of the IDs in this comma separated list"
           }
         },
         "anyOf": [
           { "required": ["filled"] },
           { "required": ["eq"] },
           { "required": ["in"] },
-          { "required": ["regex"] }
+          { "required": ["regex"] },
+          { "required": ["value"] }
         ]
       }
     },
