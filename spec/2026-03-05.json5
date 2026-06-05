@@ -1451,6 +1451,8 @@
                     "bold",
                     "italic",
                     "link",
+                    "subscript",
+                    "superscript",
                     "ordered-list",
                     "table",
                     "underline",
