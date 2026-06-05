@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-03-05 revision #5
+
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 5 June 2026.
+
+- Relaxed validation for exports by accepting numeric-string text limits, nullable remote source domains, optional live preview flags
+- Deprecated ElementBox accept values added
+- Environment ID value-based appearance conditions allowed.
+
+
 ## 2026-03-05 revision #4
 
 This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 20 May 2026.
