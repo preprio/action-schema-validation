@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-03-05 revision #6
+
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 5 June 2026.
+
+- Added ElementBox support for `subscript` and `superscript` formatting.
+
+
 ## 2026-03-05 revision #5
 
 This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 5 June 2026.
