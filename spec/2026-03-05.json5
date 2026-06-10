@@ -1748,7 +1748,7 @@
 
           "type": {
             "type" : "string",
-            "enum": ["Boolean", "Enum", "Text", "Integer", "Float", "Publication", "Coordinates", "ElementBox", "TagBox", "Stack", "Environments", "BusinessHours"],
+            "enum": ["Boolean", "Enum", "Text", "Integer", "Float", "Publication", "Coordinates", "ElementBox", "TagBox", "Stack", "Environments", "BusinessHours", "HubSpotEmbed", "TypeformEmbed", "PipedriveEmbed", "ActiveCampaignEmbed"],
             "description": "Field type being checked (not an operator!)"
           },
 
