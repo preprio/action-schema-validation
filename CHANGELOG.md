@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-03-05 revision #7
+
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 10 June 2026.
+
+- Added `HubSpotEmbed`, `TypeformEmbed`, `PipedriveEmbed`, and `ActiveCampaignEmbed` as supported field types for appearance conditions.
+
+
 ## 2026-03-05 revision #6
 
 This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 5 June 2026.
