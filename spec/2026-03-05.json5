@@ -1414,6 +1414,7 @@
                 "items": {
                   "type": "string",
                   "enum": [
+                    "ActiveCampaignEmbed",
                     "ApplePodcast",
                     "Asset",
                     "Audio",
@@ -1632,7 +1633,7 @@
         "Quote",
         "Resource",
 
-        // Embeds!
+        // Embeds
         "TypeformEmbed",
         "HubSpotEmbed",
         "ActiveCampaignEmbed",
