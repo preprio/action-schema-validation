@@ -1432,6 +1432,7 @@
                     "Heading",
                     "Html",
                     "HubSpotEmbed",
+                    "JotformEmbed",
                     "InstagramPost",
                     "Paragraph",
                     "PipedriveEmbed",
@@ -1637,7 +1638,8 @@
         "TypeformEmbed",
         "HubSpotEmbed",
         "ActiveCampaignEmbed",
-        "PipedriveEmbed"
+        "PipedriveEmbed",
+        "JotformEmbed"
       ]
     },
 
@@ -1749,7 +1751,7 @@
 
           "type": {
             "type" : "string",
-            "enum": ["Boolean", "Enum", "Text", "Integer", "Float", "Publication", "Coordinates", "ElementBox", "TagBox", "Stack", "Environments", "BusinessHours", "HubSpotEmbed", "TypeformEmbed", "PipedriveEmbed", "ActiveCampaignEmbed"],
+            "enum": ["Boolean", "Enum", "Text", "Integer", "Float", "Publication", "Coordinates", "ElementBox", "TagBox", "Stack", "Environments", "BusinessHours", "HubSpotEmbed", "TypeformEmbed", "PipedriveEmbed", "ActiveCampaignEmbed", "JotformEmbed"],
             "description": "Field type being checked (not an operator!)"
           },
 

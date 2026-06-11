@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-03-05 revision #8
+
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 11 June 2026.
+
+- Added `JotformEmbed` as a supported field type and ElementBox accept value.
+
+
 ## 2026-03-05 revision #7
 
 This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 10 June 2026.
