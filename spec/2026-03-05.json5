@@ -579,7 +579,7 @@
         "api_id": {
           "type": "string",
           "pattern": "^[a-zA-Z_][a-zA-Z0-9_-]*$",
-          "description": "GraphQL identifier (snake_case) - Not required for Divider/Column/Slug/Embed/HelpText/SEO"
+          "description": "GraphQL identifier (snake_case) - Not required for Divider/Column/Slug/HelpText/SEO"
         },
 
         "appearance_width": {
@@ -870,22 +870,6 @@
 
             "not": {
               "required": ["api_id"]
-            }
-          }
-        },
-
-        // Embed (checked)
-        {
-          "if": { "properties": { "type": { "const": "Embed" } } },
-          "then": {
-
-            "required": ["construct"],
-
-            "properties": {
-              "construct": {
-                "type": "string",
-                "description": "HTML constructor to render the embed. Editors can use this field to copy an embed code."
-              }
             }
           }
         },
@@ -1612,7 +1596,6 @@
         "DateTimeRange",
         "Color",
         "Coordinates",
-        "Embed",
         "Tags",
         "BusinessHours",
         "TwitterPost",

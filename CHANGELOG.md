@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-03-05 revision #9
+
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 23 July 2026.
+
+- Removed deprecated `Embed` field type validation.
+
+
 ## 2026-03-05 revision #8
 
 This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 11 June 2026.
