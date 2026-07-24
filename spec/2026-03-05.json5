@@ -663,7 +663,9 @@
                     "ordered-list",
                     "link",
                     "table",
-                    "alignment"
+                    "alignment",
+                    "subscript",
+                    "superscript"
                   ],
                   "type": "string"
                 }
