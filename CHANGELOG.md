@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-03-05 revision #10
+
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 24 July 2026.
+
+- Added Text HTML editor support for `subscript` and `superscript` formatting.
+
+
 ## 2026-03-05 revision #9
 
 This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 23 July 2026.
