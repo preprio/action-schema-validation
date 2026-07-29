@@ -38,19 +38,19 @@ jobs:
 
     steps:
       - name: Checkout schema repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: repository
 
       - name: Checkout validation workflow repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ job.workflow_repository }}
           ref: ${{ job.workflow_sha }}
           path: validator-repo
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: npm
