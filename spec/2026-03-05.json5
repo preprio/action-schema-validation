@@ -1669,6 +1669,14 @@
         "allow_group": {
           "type": "boolean",
           "description": "Allow items to be selected from other environments if reference is a Model"
+        },
+
+        "allowed_environments": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string"
+          },
+          "description": "Environment IDs from which items may be selected"
         }
       },
       "oneOf": [
