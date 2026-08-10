@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-03-05 revision #11
+
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 10 August 2026.
+
+- Added optional `allowed_environments` support to type references.
+
+
 ## 2026-03-05 revision #10
 
 This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 24 July 2026.
