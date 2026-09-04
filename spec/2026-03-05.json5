@@ -665,7 +665,9 @@
                     "table",
                     "alignment",
                     "subscript",
-                    "superscript"
+                    "superscript",
+                    "text-color",
+                    "highlight-color"
                   ],
                   "type": "string"
                 }

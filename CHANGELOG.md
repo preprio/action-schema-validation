@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-03-05 revision #12
+
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 4 September 2026.
+
+- Added Text HTML editor support for `text-color` and `highlight-color` formatting.
+
 ## 2026-03-05 revision #11
 
 This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 10 August 2026.
