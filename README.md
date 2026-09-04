@@ -66,7 +66,7 @@ on:
 
 jobs:
   validate:
-    uses: preprio/action-schema-validation/.github/workflows/prepr-schema-validation.yml@v1.0.13
+    uses: preprio/action-schema-validation/.github/workflows/prepr-schema-validation.yml@v1.0.14
 
   notify:
     runs-on: ubuntu-latest
