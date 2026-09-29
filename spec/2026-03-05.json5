@@ -222,7 +222,7 @@
                 "type": "string"
               },
               "live_preview": {
-                "enum": [true, false, "0", "1"],
+                "enum": [true, false, "0", "1", 0, 1],
                 "default": true,
                 "description": "If enabled this URL can be used in the visual editor"
               }
@@ -1791,7 +1791,7 @@
       "properties": {
 
         "translate": {
-          "enum": [true, false, "0", "1"],
+          "enum": [true, false, "0", "1", 0, 1],
           "default": true,
           "description": "Enable translation"
         },

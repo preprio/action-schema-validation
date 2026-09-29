@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-03-05 revision #13
+
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 29 September 2026.
+
+- Accept numeric `0` and `1` values for `live_preview` and `ai translate`.
+
 ## 2026-03-05 revision #12
 
 This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 4 September 2026.
