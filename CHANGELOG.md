@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-03-05 revision #14
+
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 14 October 2026.
+
+- Added optional boolean word counters for Text and ElementBox, optional ContentIntegration list/grid appearance, and ElementBox support for `text-color` and `highlight-color` formatting.
+
 ## 2026-03-05 revision #13
 
 This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 29 September 2026.

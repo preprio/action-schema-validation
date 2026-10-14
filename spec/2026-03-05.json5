@@ -616,6 +616,11 @@
                 "description": "Text input appearance"
               },
 
+              "appearance_show_word_counter": {
+                "type": "boolean",
+                "description": "Show the word counter"
+              },
+
               "default_value": {
                 "type": "string",
                 "description": "Default value for new items"
@@ -1342,6 +1347,11 @@
 
             "properties": {
 
+              "appearance": {
+                "enum": ["list", "grid"],
+                "description": "Remote source view appearance for editors"
+              },
+
               "remote_source": {
                 "type": "object",
                 "required": ["body_singular", "label", "ref"],
@@ -1397,6 +1407,11 @@
 
             "properties": {
 
+              "appearance_show_word_counter": {
+                "type": "boolean",
+                "description": "Show the word counter"
+              },
+
               "accept": {
                 "type": "array",
                 "items": {
@@ -1439,12 +1454,14 @@
                     "YouTubePost",
                     "alignment",
                     "bold",
+                    "highlight-color",
                     "italic",
                     "link",
                     "subscript",
                     "superscript",
                     "ordered-list",
                     "table",
+                    "text-color",
                     "underline",
                     "unordered-list",
                     // Deprecated items
