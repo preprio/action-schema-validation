@@ -549,6 +549,30 @@
 
         "type": { "$ref": "#/definitions/FieldType" },
 
+        "ai_purpose": {
+          "type": ["string", "null"]
+        },
+
+        "ai_use_when": {
+          "type": ["string", "null"]
+        },
+
+        "ai_avoid_when": {
+          "type": ["string", "null"]
+        },
+
+        "ai_expected_content": {
+          "type": ["string", "null"]
+        },
+
+        "ai_examples": {
+          "type": ["string", "null"]
+        },
+
+        "filterable": {
+          "type": "boolean"
+        },
+
         "required": {
           "type": "boolean",
           "default": false,
@@ -860,6 +884,11 @@
           "if": { "properties": { "type": { "const": "Color" } } },
           "then": {
             "required": [],
+            "properties": {
+              "default_value": {
+                "type": ["string", "null"]
+              }
+            }
           }
         },
 
@@ -1093,6 +1122,20 @@
                   }
                 },
                 "description": "Reference to enum ContentModel"
+              },
+
+              "allowed_values": {
+                "type": ["array", "null"],
+                "items": {
+                  "type": "string"
+                }
+              },
+
+              "disallowed_values": {
+                "type": ["array", "null"],
+                "items": {
+                  "type": "string"
+                }
               },
 
               "default_value": {
@@ -1688,6 +1731,10 @@
         "allow_group": {
           "type": "boolean",
           "description": "Allow items to be selected from other environments if reference is a Model"
+        },
+
+        "restrict_to_user_access": {
+          "type": "boolean"
         },
 
         "allowed_environments": {

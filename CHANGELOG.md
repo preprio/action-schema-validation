@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-03-05 revision #18
+
+This is a revision of the existing `2026-03-05` schema version. Released on 15 October 2026.
+
+- Added optional nullable string-array validation for Enum field `allowed_values` and `disallowed_values`, and documented release instructions in `AGENTS.md`.
+- Changelog revision numbers now match the release patch version (`v1.0.18` → revision #18).
+
+## 2026-03-05 revision #15
+
+This is a revision of the existing `2026-03-05` schema version. Released on 15 October 2026.
+
+- Added optional nullable string validation for field AI metadata and Color `default_value`, optional boolean `filterable`, and optional boolean `types[].restrict_to_user_access` for ContentReference and Stack.
+
 ## 2026-03-05 revision #14
 
 This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 14 October 2026.
