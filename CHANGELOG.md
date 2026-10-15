@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-03-05 revision #15
+
+This is a revision of the existing `2026-03-05` schema version. Released on 15 October 2026.
+
+- Added optional nullable string validation for field AI metadata and Color `default_value`, optional boolean `filterable`, and optional boolean `types[].restrict_to_user_access` for ContentReference and Stack.
+
 ## 2026-03-05 revision #14
 
 This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 14 October 2026.
