@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-03-05 revision #19
+
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 15 October 2026.
+
+- Restored the validator script required by the GitHub Actions workflow, corrected the npm validation command, and added schema regression tests.
+
 ## 2026-03-05 revision #18
 
 This is a revision of the existing `2026-03-05` schema version. Released on 15 October 2026.

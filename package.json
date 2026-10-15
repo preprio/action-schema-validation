@@ -6,7 +6,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "validate": "node tests/validate-prepr-schema.mjs"
+    "validate": "node scripts/validate-prepr-schema.mjs"
   },
   "dependencies": {
     "ajv": "^8.17.1",
