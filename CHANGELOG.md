@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-03-05 revision #18
+
+This is a revision of the existing `2026-03-05` schema version. Released on 15 October 2026.
+
+- Added optional nullable string-array validation for Enum field `allowed_values` and `disallowed_values`, and documented release instructions in `AGENTS.md`.
+- Changelog revision numbers now match the release patch version (`v1.0.18` → revision #18).
+
 ## 2026-03-05 revision #15
 
 This is a revision of the existing `2026-03-05` schema version. Released on 15 October 2026.

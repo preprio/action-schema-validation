@@ -1124,6 +1124,20 @@
                 "description": "Reference to enum ContentModel"
               },
 
+              "allowed_values": {
+                "type": ["array", "null"],
+                "items": {
+                  "type": "string"
+                }
+              },
+
+              "disallowed_values": {
+                "type": ["array", "null"],
+                "items": {
+                  "type": "string"
+                }
+              },
+
               "default_value": {
                 "type": "string",
                 "description": "Default enum value (UPPERCASE)"
