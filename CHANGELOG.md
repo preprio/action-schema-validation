@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-03-05 revision #20
+
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 15 October 2026.
+
+- Updated the transitive `fast-uri` dependency from `3.1.7` to `3.1.8` to fix CVE-2026-86472.
+
 ## 2026-03-05 revision #19
 
 This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 15 October 2026.
