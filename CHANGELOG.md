@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-03-05 revision #21
+
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 3 November 2026.
+
+- Updated the transitive `fast-uri` dependency from `3.1.8` to `3.1.9`.
+
 ## 2026-03-05 revision #20
 
 This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 15 October 2026.
