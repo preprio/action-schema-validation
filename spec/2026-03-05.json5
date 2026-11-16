@@ -636,7 +636,7 @@
             "properties": {
 
               "appearance": {
-                "enum": ["single_line", "textarea", "html_editor"],
+                "enum": ["single_line", "textarea", "html_editor", "markdown"],
                 "description": "Text input appearance"
               },
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-03-05 revision #22
+
+This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 16 November 2026.
+
+- Added support for the `markdown` appearance on Text fields.
+
 ## 2026-03-05 revision #21
 
 This is a non-breaking revision of the existing `2026-03-05` schema version. Released on 3 November 2026.
